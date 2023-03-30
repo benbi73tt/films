@@ -37,13 +37,26 @@ public class SearchAttribute implements Initializable {
     public TableView<Film> searchTable;
     DatabaseHandler dbHandler = new DatabaseHandler();
 
+    private final ObservableList<Film> searchData = FXCollections.observableArrayList();
+
+
     private Stage dialogStage;
+
+    private boolean isCheckNumber() {
+        if (!operator.isDisable()) {
+            return textSearch.getText().matches("[0-9.]+");
+        }
+        return true;
+    }
 
     @FXML
     private void search() {
-        if (textSearch != null && !textSearch.getText().isEmpty()) {
+        if (textSearch != null && !textSearch.getText().isEmpty() && isCheckNumber()) {
             getSearchAttribute(attribute.getValue(), textSearch.getText(), operator.getValue());
             dialogStage.close();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Неккоретно заполнено поле поиска", ButtonType.CANCEL);
+            alert.showAndWait();
         }
     }
 
@@ -52,7 +65,6 @@ public class SearchAttribute implements Initializable {
         dialogStage.close();
     }
 
-    private final ObservableList<Film> searchData = FXCollections.observableArrayList();
 
     private void getSearchAttribute(TypeSearch type, String text, OperatorEnum operator) {
         searchTable.getItems().clear();
@@ -67,6 +79,7 @@ public class SearchAttribute implements Initializable {
                         listActor.append(actor.getString(2)).append(", ");
                     }
                 }
+                listActor = new StringBuilder(listActor.substring(0, listActor.length() - 2));
                 Film film = new Film(films.getInt(1),
                         films.getString(2),
                         films.getString(3),
@@ -103,7 +116,6 @@ public class SearchAttribute implements Initializable {
             textSearch.setDisable(false);
             textSearch.clear();
         });
-
         search.disableProperty().bind(Bindings.isEmpty(textSearch.textProperty()));
     }
 }

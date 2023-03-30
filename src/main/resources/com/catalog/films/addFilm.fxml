@@ -3,21 +3,51 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.text.Font?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.catalog.films.controller.AddFilm"
-            maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="457.0"
-            prefWidth="388.0">
+            maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0"
+            prefWidth="400.0">
+    <Label layoutX="10.0" layoutY="25.0" prefHeight="48.0" prefWidth="230.0" text="Выберите название: ">
+        <font>
+            <Font size="16.0"/>
+        </font>
+    </Label>
+    <ComboBox fx:id="nameBox" layoutX="180.0" layoutY="30.0" prefHeight="35.0" prefWidth="200.0"/>
+    <Label layoutX="10.0" layoutY="85.0" prefHeight="48.0" prefWidth="230.0" text="Добавьте рейтинг: ">
+        <font>
+            <Font size="16.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="ratingField" layoutX="180.0" layoutY="90.0" prefHeight="35.0" prefWidth="200.0"/>
+    <Label layoutX="10.0" layoutY="145.0" prefHeight="48.0" prefWidth="230.0" text="Выберите жанр: ">
+        <font>
+            <Font size="16.0"/>
+        </font>
+    </Label>
+    <ComboBox fx:id="genreBox" layoutX="180.0" layoutY="150.0" prefHeight="35.0" prefWidth="200.0"/>
+    <Label layoutX="10.0" layoutY="205.0" prefHeight="48.0" prefWidth="230.0" text="Выберите продюсера: ">
+        <font>
+            <Font size="16.0"/>
+        </font>
+    </Label>
+    <ComboBox fx:id="producerBox" layoutX="180.0" layoutY="210.0" prefHeight="35.0" prefWidth="200.0"/>
+    <Label layoutX="10.0" layoutY="265.0" prefHeight="48.0" prefWidth="230.0" text="Выберите год: ">
+        <font>
+            <Font size="16.0"/>
+        </font>
+    </Label>
+    <ComboBox fx:id="yearBox" layoutX="180.0" layoutY="270.0" prefHeight="35.0" prefWidth="200.0"/>
+    <Label layoutX="10.0" layoutY="325.0" prefHeight="48.0" prefWidth="230.0" text="Выберите актера: ">
+        <font>
+            <Font size="16.0"/>
+        </font>
+    </Label>
+    <ComboBox fx:id="actorBox" layoutX="180.0" layoutY="330.0" prefHeight="35.0" prefWidth="200.0"/>
 
-    <ComboBox fx:id="nameBox" layoutX="150.0" layoutY="30.0" prefHeight="35.0" prefWidth="200.0"/>
-    <TextField fx:id="ratingField" layoutX="150.0" layoutY="90.0" prefHeight="35.0" prefWidth="200.0"/>
-    <ComboBox fx:id="genreBox" layoutX="150.0" layoutY="150.0" prefHeight="35.0" prefWidth="200.0"/>
-    <ComboBox fx:id="producerBox" layoutX="150.0" layoutY="210.0" prefHeight="35.0" prefWidth="200.0"/>
-    <ComboBox fx:id="yearBox" layoutX="150.0" layoutY="270.0" prefHeight="35.0" prefWidth="200.0"/>
-    <ComboBox fx:id="actorBox" layoutX="150.0" layoutY="330.0" prefHeight="35.0" prefWidth="200.0"/>
-
-    <Button fx:id="save" layoutX="80.0" layoutY="400.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0"
+    <Button fx:id="save" layoutX="80.0" layoutY="410.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0"
              onAction="#save" text="Сохранить"/>
-    <Button fx:id="cancel" layoutX="300.0" layoutY="400.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0"
+    <Button fx:id="cancel" layoutX="300.0" layoutY="410.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0"
              onAction="#cancel" text="Отмена"/>
 </AnchorPane>

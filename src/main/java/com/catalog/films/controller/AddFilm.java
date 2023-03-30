@@ -1,12 +1,8 @@
 package com.catalog.films.controller;
 
 import com.catalog.films.data.DatabaseHandler;
-import com.catalog.films.enums.TypeSearch;
 import com.catalog.films.model.Film;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -14,16 +10,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lombok.Data;
 
-import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Objects;
-import java.util.ResourceBundle;
-
 
 @Data
-public class AddFilm implements Initializable {
-
+public class AddFilm {
 
     private Stage dialogStage;
     @FXML
@@ -48,9 +37,14 @@ public class AddFilm implements Initializable {
         return name.matches("[0-9.]+");
     }
 
+    private boolean isCheckRate(String rate) {
+        double result = Double.parseDouble(rate);
+        return (result > 0) && (result <= 10);
+    }
+
     @FXML
     private void save() {
-        if (checkIsEmpty() || !isCheckNumber(ratingField.getText())) {
+        if (checkIsEmpty() || !isCheckNumber(ratingField.getText()) || !(isCheckRate(ratingField.getText()))) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Ввели неккоректные данные. Попробуйте снова...", ButtonType.CANCEL);
             alert.showAndWait();
         } else {
@@ -75,9 +69,4 @@ public class AddFilm implements Initializable {
     private void cancel() {
         dialogStage.close();
     }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-    }
-
 }

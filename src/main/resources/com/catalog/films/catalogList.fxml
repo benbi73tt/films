@@ -6,24 +6,25 @@
 <?import javafx.scene.text.Text?>
 <AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.14-internal"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.catalog.films.controller.BaseController">
-    <TableView fx:id="CatalogTable" layoutX="150.0" layoutY="100.0" prefHeight="200.0" prefWidth="728.0">
+    <TableView fx:id="CatalogTable" layoutX="150.0" layoutY="100.0" prefHeight="240.0" prefWidth="741.0" >
         <columns>
-            <TableColumn fx:id="idColumn" prefWidth="120.20001220703125" text="Id"/>
-            <TableColumn fx:id="nameColumn" prefWidth="120.20001220703125" text="Name"/>
-            <TableColumn fx:id="ratingColumn" prefWidth="120.4000244140625" text="Rating"/>
-            <TableColumn fx:id="genreColumn" prefWidth="120.20001220703125" text="Genre"/>
-            <TableColumn fx:id="producerColumn" prefWidth="120.4000244140625" text="Producer"/>
-            <TableColumn fx:id="yearColumn" prefWidth="120.20001220703125" text="Year"/>
-            <TableColumn fx:id="actorColumn" prefWidth="120.20001220703125" text="Actor"/>
+            <TableColumn fx:id="idColumn" prefWidth="120" text="Id"/>
+            <TableColumn fx:id="nameColumn" prefWidth="120" text="Name"/>
+            <TableColumn fx:id="ratingColumn" prefWidth="120" text="Rating"/>
+            <TableColumn fx:id="genreColumn" prefWidth="120" text="Genre"/>
+            <TableColumn fx:id="producerColumn" prefWidth="120" text="Producer"/>
+            <TableColumn fx:id="yearColumn" prefWidth="120" text="Year"/>
+            <TableColumn fx:id="actorColumn" prefWidth="120" text="Actor" />
 
         </columns>
     </TableView>
-    <ComboBox fx:id="nameBox" layoutX="160.0" layoutY="60.0" prefHeight="26.0" prefWidth="105.0"/>
-    <TextField fx:id="ratingField" layoutX="290.0" layoutY="60.0" prefHeight="26.0" prefWidth="105.0"/>
-    <ComboBox fx:id="genreBox" layoutX="410.0" layoutY="60.0" prefHeight="26.0" prefWidth="105.0"/>
-    <ComboBox fx:id="producerBox" layoutX="530.0" layoutY="60.0" prefHeight="26.0" prefWidth="105.0"/>
-    <ComboBox fx:id="actorBox" layoutX="770.0" layoutY="60.0" prefHeight="26.0" prefWidth="105.0"/>
-    <ComboBox fx:id="yearBox" layoutX="650.0" layoutY="60.0" prefHeight="26.0" prefWidth="105.0"/>
+    <ComboBox fx:id="nameBox" layoutX="160.0" layoutY="60.0" prefHeight="26.0" prefWidth="102.0"/>
+    <TextField fx:id="ratingField" layoutX="280.0" layoutY="60.0" prefHeight="26.0" prefWidth="102.0"/>
+    <ComboBox fx:id="genreBox" layoutX="400.0" layoutY="60.0" prefHeight="26.0" prefWidth="102.0"/>
+    <ComboBox fx:id="producerBox" layoutX="520.0" layoutY="60.0" prefHeight="26.0" prefWidth="102.0"/>
+    <ComboBox fx:id="yearBox" layoutX="640.0" layoutY="60.0" prefHeight="26.0" prefWidth="102.0"/>
+    <ComboBox fx:id="actorBox" layoutX="760.0" layoutY="60.0" prefHeight="26.0" prefWidth="102.0"/>
+
 
     <Text layoutX="50" layoutY="75">Введите:</Text>
 
@@ -31,20 +32,21 @@
     <Button fx:id="addButton" layoutX="10" layoutY="160" prefHeight="10" prefWidth="120" text="Добавить"/>
     <Button fx:id="change" layoutX="10" layoutY="210" prefHeight="10" prefWidth="120" text="Изменить"/>
     <Button fx:id="delete" layoutX="10" layoutY="260" prefHeight="10" prefWidth="120" text="Удалить"/>
+    <Button fx:id="addAttribute" layoutX="10" layoutY="310" prefHeight="10" prefWidth="120" text="Добавить атрибут"/>
 
 
-    <Button fx:id="addAttribute" layoutX="10" layoutY="630" prefHeight="10" prefWidth="120" text="Добавить атрибут"/>
-    <Button fx:id="searchButton" layoutX="300" layoutY="350" prefHeight="30" prefWidth="320" text="Поиск по атрибуту"/>
+
+    <Button fx:id="searchButton" layoutX="350" layoutY="380" prefHeight="30" prefWidth="320" text="Поиск по атрибуту"/>
 
 
-    <TableView fx:id="searchTable" layoutX="150.0" layoutY="400.0" prefHeight="200.0" prefWidth="728.0">
+    <TableView fx:id="searchTable" layoutX="150.0" layoutY="430.0" prefHeight="200.0" prefWidth="741.0">
         <columns>
-            <TableColumn fx:id="nameSearchColumn" prefWidth="120.20001220703125" text="Name"/>
-            <TableColumn fx:id="ratingSearchColumn" prefWidth="120.4000244140625" text="Rating"/>
-            <TableColumn fx:id="genreSearchColumn" prefWidth="120.20001220703125" text="Genre"/>
-            <TableColumn fx:id="producerSearchColumn" prefWidth="120.4000244140625" text="Producer"/>
-            <TableColumn fx:id="yearSearchColumn" prefWidth="120.20001220703125" text="Year"/>
-            <TableColumn fx:id="actorSearchColumn" prefWidth="120.20001220703125" text="Actor"/>
+            <TableColumn fx:id="nameSearchColumn" prefWidth="120" text="Name"/>
+            <TableColumn fx:id="ratingSearchColumn" prefWidth="120" text="Rating"/>
+            <TableColumn fx:id="genreSearchColumn" prefWidth="120" text="Genre"/>
+            <TableColumn fx:id="producerSearchColumn" prefWidth="120" text="Producer"/>
+            <TableColumn fx:id="yearSearchColumn" prefWidth="120" text="Year"/>
+            <TableColumn fx:id="actorSearchColumn" prefWidth="120" text="Actor"/>
 
         </columns>
     </TableView>

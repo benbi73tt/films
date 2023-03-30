@@ -96,12 +96,14 @@ public class DatabaseHandler {
         }
     }
 
+
+
     public ResultSet getSearchAttribute(String str, TypeSearch typeSearch, OperatorEnum operator) {
 
         String getSearchName = switch (typeSearch) {
             case NAME -> path + " WHERE name_films.name LIKE '%" + str + "%';";
-            case PRODUCER -> path + "WHERE producer.name LIKE '%" + str + "%';";
-            case GENRE -> path + "WHERE genre.name LIKE '%" + str + "%';";
+            case PRODUCER -> path + " WHERE producer.name LIKE '%" + str + "%';";
+            case GENRE -> path + " WHERE genre.name LIKE '%" + str + "%';";
             case YEAR -> switch (operator) {
                 case GREATER -> path + " WHERE year.year_release>" + str + " ORDER BY year DESC;";
                 case LESS -> path + " WHERE year.year_release<" + str + " ORDER BY year DESC;";

@@ -131,7 +131,6 @@ public class BaseController implements Initializable {
                 controller.initData(searchTable);
                 controller.setDialogStage(stage);
                 stage.showAndWait();
-                updateAttribute();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -150,7 +149,7 @@ public class BaseController implements Initializable {
             NewAttribute controller = loader.getController();
             controller.setDialogStage(stage);
             stage.showAndWait();
-            updateAll();
+            updateAttribute();
         });
 
 
@@ -166,11 +165,11 @@ public class BaseController implements Initializable {
             stage.setScene(new Scene(loader.getRoot()));
             AddFilm controller = loader.getController();
             controller.setDialogStage(stage);
-            controller.getNameBox().setItems(name);
-            controller.getGenreBox().setItems(genre);
-            controller.getProducerBox().setItems(producer);
-            controller.getYearBox().setItems(year);
-            controller.getActorBox().setItems(actor);
+            controller.getNameBox().setItems(name.sorted());
+            controller.getGenreBox().setItems(genre.sorted());
+            controller.getProducerBox().setItems(producer.sorted());
+            controller.getYearBox().setItems(year.sorted());
+            controller.getActorBox().setItems(actor.sorted());
             stage.showAndWait();
             updateAll();
         });
@@ -219,7 +218,6 @@ public class BaseController implements Initializable {
 
         updateCatalog.setOnAction(actionEvent -> updateAll());
 
-        updateAttribute();
         idColumn.setVisible(false);
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -252,6 +250,7 @@ public class BaseController implements Initializable {
             producerBox.getItems().setAll(producer.sorted());
             yearBox.getItems().setAll(year.sorted());
         } catch (SQLException e) {
+
             throw new RuntimeException(e);
         }
     }
