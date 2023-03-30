@@ -71,7 +71,7 @@ public class SearchAttribute implements Initializable {
                         films.getString(6),
                         listActor.toString());
                 if (type == TypeSearch.ACTOR) {
-                    if(film.getActor().toLowerCase().contains(text.toLowerCase())){
+                    if (film.getActor().toLowerCase().contains(text.toLowerCase())) {
                         searchData.add(film);
                     }
                 } else {

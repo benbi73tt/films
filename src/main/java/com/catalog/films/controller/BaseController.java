@@ -203,6 +203,8 @@ public class BaseController implements Initializable {
             } catch (SQLException e) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Ввели неккоректные данные. Попробуйте снова...", ButtonType.CANCEL);
                 alert.showAndWait();
+                throw new RuntimeException(e);
+
             }
         });
 

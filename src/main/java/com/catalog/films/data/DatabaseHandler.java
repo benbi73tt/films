@@ -83,13 +83,15 @@ public class DatabaseHandler {
                     "UPDATE catalog_films SET producer = '" + searchAttribute(text, PRODUCER) + "' WHERE id=" + id + ";";
             case GENRE ->
                     "UPDATE catalog_films SET genre = '" + searchAttribute(text, GENRE) + "' WHERE id=" + id + ";";
-            case ACTOR -> null;
+            case ACTOR ->
+                    "UPDATE catalog_actor Set actor_id ='" + searchAttribute(text, ACTOR) + "' Where catalog_id = " + id + ";";
         };
 
+        PreparedStatement prSt = getDBConnection().prepareStatement(update);
+        prSt.executeUpdate();
         if (type == ACTOR) {
-            checkActor(text, ACTOR, id);
-        } else {
-            PreparedStatement prSt = getDBConnection().prepareStatement(update);
+            String duplicateActor = "DELETE FROM catalog_actor t1 WHERE EXISTS (SELECT 1 FROM catalog_actor t2 WHERE t2.id<t1.id and t1.actor_id=t2.actor_id and t1.catalog_id=t2.catalog_id);";
+            prSt = getDBConnection().prepareStatement(duplicateActor);
             prSt.executeUpdate();
         }
     }
@@ -100,12 +102,12 @@ public class DatabaseHandler {
             case NAME -> path + " WHERE name_films.name LIKE '%" + str + "%';";
             case PRODUCER -> path + "WHERE producer.name LIKE '%" + str + "%';";
             case GENRE -> path + "WHERE genre.name LIKE '%" + str + "%';";
-            case YEAR -> switch (operator){
+            case YEAR -> switch (operator) {
                 case GREATER -> path + " WHERE year.year_release>" + str + " ORDER BY year DESC;";
                 case LESS -> path + " WHERE year.year_release<" + str + " ORDER BY year DESC;";
                 case EQUAL -> path + " WHERE year.year_release=" + str + " ORDER BY year DESC;";
             };
-            case RATE -> switch (operator){
+            case RATE -> switch (operator) {
                 case GREATER -> path + " WHERE rating>" + str + ";";
                 case LESS -> path + " WHERE rating<" + str + ";";
                 case EQUAL -> path + " WHERE rating=" + str + ";";
@@ -119,19 +121,6 @@ public class DatabaseHandler {
             throw new RuntimeException(e);
         }
         return resSet;
-    }
-
-    public int addAttribute(String str, TypeSearch type) throws SQLException {
-        String insertAttribute = switch (type) {
-            case GENRE -> "INSERT INTO genre (name) VALUES (?);";
-            case PRODUCER -> "INSERT INTO producer (name) VALUES (?);";
-            case ACTOR -> "INSERT INTO actor (name) VALUES (?);";
-            default -> throw new IllegalStateException("Unexpected value: " + type);
-        };
-        PreparedStatement prSt = getDBConnection().prepareStatement(insertAttribute);
-        prSt.setString(1, str);
-        prSt.executeUpdate();
-        return searchAttribute(str, type);
     }
 
     public int searchAttribute(String str, TypeSearch type) throws SQLException {
@@ -151,9 +140,10 @@ public class DatabaseHandler {
         return 0;
     }
 
-    public void checkActor(String str, TypeSearch type, int id) {
+
+    private void checkActor(String str, TypeSearch type, int id) {
         String last = "SELECT * FROM catalog_films ORDER BY id DESC LIMIT 1;";
-        List<String> myList = new ArrayList<>(Arrays.asList(str.split(",")));
+        List<String> myList = new ArrayList<>(Arrays.asList(",".split(str)));
         List<Integer> catalogActor = new ArrayList<>();
         myList.forEach(it -> {
             try {
