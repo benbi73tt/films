@@ -20,6 +20,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Data
@@ -102,29 +103,38 @@ public class BaseController implements Initializable {
     ObservableList<String> year = FXCollections.observableArrayList();
 
 
-    public boolean isCheckNumber(String name) {
+    private boolean isCheckNumber(String name) {
         return name.matches("[0-9.]+");
     }
 
 
+    private void updateAll() {
+        data.clear();
+        searchTable.getItems().clear();
+        addInfFilms();
+        CatalogTable.setItems(data);
+        updateAttribute();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        updateAttribute();
 
         searchButton.setOnAction(actionEvent -> {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Application.class.getResource("searchAttribute.fxml"));
             try {
                 loader.load();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(loader.getRoot()));
+                SearchAttribute controller = loader.getController();
+                controller.initData(searchTable);
+                controller.setDialogStage(stage);
+                stage.showAndWait();
+                updateAttribute();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            Stage stage = new Stage();
-            stage.setScene(new Scene(loader.getRoot()));
-            SearchAttribute controller = loader.getController();
-            controller.initData(searchTable);
-            controller.setDialogStage(stage);
-            stage.showAndWait();
-            updateAttribute();
         });
 
         addAttribute.setOnAction(actionEvent -> {
@@ -140,31 +150,29 @@ public class BaseController implements Initializable {
             NewAttribute controller = loader.getController();
             controller.setDialogStage(stage);
             stage.showAndWait();
-            updateAttribute();
+            updateAll();
         });
 
 
-
         addButton.setOnAction(actionEvent -> {
-            if (checkIsEmpty() || !isCheckNumber(ratingField.getText())) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Ввели неккоректные данные. Попробуйте снова...", ButtonType.CANCEL);
-                alert.showAndWait();
-            } else {
-                Film film = new Film(nameBox.getValue(),
-                        ratingField.getText(),
-                        genreBox.getValue(),
-                        producerBox.getValue(),
-                        yearBox.getValue(),
-                        actorBox.getValue());
-                data.add(film);
-                dbHandler.insertFilm(film);
-                nameBox.setValue(null);
-                ratingField.clear();
-                producerBox.setValue(null);
-                yearBox.setValue(null);
-                actorBox.setValue(null);
-                genreBox.setValue(null);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Application.class.getResource("addFilm.fxml"));
+            try {
+                loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
+            Stage stage = new Stage();
+            stage.setScene(new Scene(loader.getRoot()));
+            AddFilm controller = loader.getController();
+            controller.setDialogStage(stage);
+            controller.getNameBox().setItems(name);
+            controller.getGenreBox().setItems(genre);
+            controller.getProducerBox().setItems(producer);
+            controller.getYearBox().setItems(year);
+            controller.getActorBox().setItems(actor);
+            stage.showAndWait();
+            updateAll();
         });
 
         delete.setOnAction(actionEvent -> {
@@ -200,21 +208,16 @@ public class BaseController implements Initializable {
                 if (!(actorBox.getValue() == null)) {
                     change(filmId, actorBox.getValue(), TypeSearch.ACTOR);
                 }
+                updateAll();
             } catch (SQLException e) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Ввели неккоректные данные. Попробуйте снова...", ButtonType.CANCEL);
                 alert.showAndWait();
                 throw new RuntimeException(e);
-
             }
         });
 
-        updateCatalog.setOnAction(actionEvent -> {
-            data.clear();
-            searchTable.getItems().clear();
-            addInfFilms();
-            CatalogTable.setItems(data);
-            updateAttribute();
-        });
+
+        updateCatalog.setOnAction(actionEvent -> updateAll());
 
         updateAttribute();
         idColumn.setVisible(false);
@@ -235,9 +238,8 @@ public class BaseController implements Initializable {
 
     }
 
-    private void updateAttribute(){
+    private void updateAttribute() {
         try {
-
             updateGenre();
             updateActor();
             updateName();
@@ -253,17 +255,43 @@ public class BaseController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
     private void delete(int id) throws SQLException {
         dbHandler.delete(id);
     }
 
-    private void change(int id, String text, TypeSearch typeSearch) throws SQLException {
-        dbHandler.change(id, text, typeSearch);
+    private void showAlert(int id, String text) throws SQLException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog with Custom Actions");
+        alert.setHeaderText("Look, a Confirmation Dialog with Custom Actions");
+        alert.setContentText("Choose your option.");
+
+        ButtonType buttonTypeOne = new ButtonType("Изменить");
+        ButtonType buttonTypeTwo = new ButtonType("Добавить");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeOne) {
+            dbHandler.change(id, text, TypeSearch.ACTOR);
+        } else if (result.get() == buttonTypeTwo) {
+            dbHandler.checkActor(text, TypeSearch.ACTOR, id);
+        } else {
+            alert = new Alert(Alert.AlertType.WARNING, "Отмена", ButtonType.CANCEL);
+            alert.showAndWait();
+        }
     }
 
-    private boolean checkIsEmpty() {
-        return genreBox.getValue() == null || nameBox.getValue() == null || producerBox.getValue() == null || actorBox.getValue() == null || yearBox.getValue() == null;
+    private void change(int id, String text, TypeSearch typeSearch) throws SQLException {
+        if (typeSearch == TypeSearch.ACTOR) {
+            showAlert(id, text);
+        } else {
+            dbHandler.change(id, text, typeSearch);
+        }
+
     }
+
 
     private void updateGenre() throws SQLException {
         ResultSet resultGenre = dbHandler.getAttribute(TypeSearch.GENRE);
@@ -296,6 +324,7 @@ public class BaseController implements Initializable {
             producer.add(resultProducer.getString(2));
         }
     }
+
     private void updateYear() throws SQLException {
         ResultSet resultYear = dbHandler.getAttribute(TypeSearch.YEAR);
         year.clear();
@@ -312,10 +341,11 @@ public class BaseController implements Initializable {
                 ResultSet actor = dbHandler.getActorFilms();
 
                 while (actor.next()) {
-                    if (Objects.equals(actor.getString(1), films.getString(2))) {
+                    if (Objects.equals(actor.getString(1), films.getString(1))) {
                         listActor.append(actor.getString(2)).append(", ");
                     }
                 }
+                listActor = new StringBuilder(listActor.substring(0, listActor.length() - 2));
                 Film film = new Film(films.getInt(1),
                         films.getString(2),
                         films.getString(3),
@@ -329,6 +359,4 @@ public class BaseController implements Initializable {
             throw new RuntimeException(e);
         }
     }
-
-
 }

@@ -44,8 +44,12 @@ public class SearchAttribute implements Initializable {
         if (textSearch != null && !textSearch.getText().isEmpty()) {
             getSearchAttribute(attribute.getValue(), textSearch.getText(), operator.getValue());
             dialogStage.close();
-
         }
+    }
+
+    @FXML
+    private void cancel() {
+        dialogStage.close();
     }
 
     private final ObservableList<Film> searchData = FXCollections.observableArrayList();
@@ -59,7 +63,7 @@ public class SearchAttribute implements Initializable {
                 ResultSet actor = dbHandler.getActorFilms();
 
                 while (actor.next()) {
-                    if (Objects.equals(actor.getString(1), films.getString(2))) {
+                    if (Objects.equals(actor.getString(1), films.getString(1))) {
                         listActor.append(actor.getString(2)).append(", ");
                     }
                 }
@@ -86,11 +90,6 @@ public class SearchAttribute implements Initializable {
 
     void initData(TableView<Film> searchTable) {
         this.searchTable = searchTable;
-    }
-
-    @FXML
-    private void cancel() {
-        dialogStage.close();
     }
 
     @Override

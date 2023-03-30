@@ -48,7 +48,7 @@ public class DatabaseHandler {
     }
 
     public ResultSet getActorFilms() {
-        String getFilm = "SELECT name_films.name, actor.name from catalog_films inner join name_films on catalog_films.name = name_films.id Left join catalog_actor on catalog_actor.catalog_id = catalog_films.id left join actor on catalog_actor.actor_id = actor.id;";
+        String getFilm = "SELECT catalog_films.id, actor.name from catalog_films inner join name_films on catalog_films.name = name_films.id Left join catalog_actor on catalog_actor.catalog_id = catalog_films.id left join actor on catalog_actor.actor_id = actor.id;";
         try {
             PreparedStatement prSt = getDBConnection().prepareStatement(getFilm);
             resSet = prSt.executeQuery();
@@ -141,9 +141,9 @@ public class DatabaseHandler {
     }
 
 
-    private void checkActor(String str, TypeSearch type, int id) {
+    public void checkActor(String str, TypeSearch type, int id) {
         String last = "SELECT * FROM catalog_films ORDER BY id DESC LIMIT 1;";
-        List<String> myList = new ArrayList<>(Arrays.asList(",".split(str)));
+        List<String> myList = new ArrayList<>(Arrays.asList(str.split(",")));
         List<Integer> catalogActor = new ArrayList<>();
         myList.forEach(it -> {
             try {
