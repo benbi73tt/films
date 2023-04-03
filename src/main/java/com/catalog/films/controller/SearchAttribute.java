@@ -57,6 +57,7 @@ public class SearchAttribute implements Initializable {
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Неккоретно заполнено поле поиска", ButtonType.CANCEL);
             alert.showAndWait();
+            textSearch.clear();
         }
     }
 

@@ -74,6 +74,19 @@ public class DatabaseHandler {
         prSt.executeUpdate();
     }
 
+    public void deleteAttribute(int id, TypeSearch type) throws SQLException {
+        String del = switch (type) {
+            case GENRE -> "DELETE FROM genre WHERE id=" + id + ";";
+            case YEAR -> "DELETE FROM year WHERE id=" + id + ";";
+            case NAME -> "DELETE FROM name_films WHERE id=" + id + ";";
+            case PRODUCER -> "DELETE FROM producer WHERE id=" + id + ";";
+            case ACTOR -> "DELETE FROM actor WHERE id=" + id + ";";
+            default -> throw new IllegalStateException("Unexpected value: " + type);
+        };
+        PreparedStatement prSt = getDBConnection().prepareStatement(del);
+        prSt.executeUpdate();
+    }
+
     public void change(int id, String text, TypeSearch type) throws SQLException {
         String update = switch (type) {
             case NAME -> "UPDATE catalog_films SET name = '" + searchAttribute(text, NAME) + "' WHERE id=" + id + ";";
@@ -96,6 +109,23 @@ public class DatabaseHandler {
         }
     }
 
+    public void changeAttribute(int id, TypeSearch type, String text) throws SQLException {
+        if (searchAttribute(text, type) != 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Такое поле уже существует...", ButtonType.CANCEL);
+            alert.showAndWait();
+        } else {
+            String update = switch (type) {
+                case NAME -> "UPDATE name_films SET name = '" + text + "' WHERE id=" + id + ";";
+                case RATE -> "UPDATE catalog_films SET rating = '" + text + "' WHERE id=" + id + ";";
+                case YEAR -> "UPDATE year SET year_release = '" + text + "' WHERE id=" + id + ";";
+                case PRODUCER -> "UPDATE producer SET name = '" + text + "' WHERE id=" + id + ";";
+                case GENRE -> "UPDATE genre SET name = '" + text + "' WHERE id=" + id + ";";
+                case ACTOR -> "UPDATE actor Set name ='" + text + "' Where id = " + id + ";";
+            };
+            PreparedStatement prSt = getDBConnection().prepareStatement(update);
+            prSt.executeUpdate();
+        }
+    }
 
 
     public ResultSet getSearchAttribute(String str, TypeSearch typeSearch, OperatorEnum operator) {

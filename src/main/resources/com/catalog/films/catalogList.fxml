@@ -33,6 +33,8 @@
     <Button fx:id="change" layoutX="10" layoutY="210" prefHeight="10" prefWidth="120" text="Изменить"/>
     <Button fx:id="delete" layoutX="10" layoutY="260" prefHeight="10" prefWidth="120" text="Удалить"/>
     <Button fx:id="addAttribute" layoutX="10" layoutY="310" prefHeight="10" prefWidth="120" text="Добавить атрибут"/>
+    <Button fx:id="delAttribute" layoutX="10" layoutY="360" prefHeight="10" prefWidth="120" text="Удалить атрибут"/>
+    <Button fx:id="changeAttribute" layoutX="10" layoutY="410" prefHeight="10" prefWidth="120" text="Изменить атрибут"/>
 
 
 

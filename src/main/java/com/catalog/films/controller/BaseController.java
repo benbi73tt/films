@@ -25,12 +25,6 @@ import java.util.ResourceBundle;
 
 @Data
 public class BaseController implements Initializable {
-    //TODO Добавить изменение актеров
-    //TODO Заполнить БД
-    //TODO Обновление таблиц при заполнение добавлении
-    //TODO активная сортировка при вводе???
-    //TODO Вынести в отдельный экран????
-    //TODO сделать красиво
     @FXML
     public TableView<Film> CatalogTable;
     @FXML
@@ -92,6 +86,10 @@ public class BaseController implements Initializable {
     public Button change;
     @FXML
     public Button addAttribute;
+    @FXML
+    public Button delAttribute;
+    @FXML
+    public Button changeAttribute;
 
     DatabaseHandler dbHandler = new DatabaseHandler();
 
@@ -148,6 +146,50 @@ public class BaseController implements Initializable {
             stage.setScene(new Scene(loader.getRoot()));
             NewAttribute controller = loader.getController();
             controller.setDialogStage(stage);
+            stage.showAndWait();
+            updateAttribute();
+        });
+
+        delAttribute.setOnAction(actionEvent -> {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Application.class.getResource("delChangeAttribute.fxml"));
+            try {
+                loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Stage stage = new Stage();
+            stage.setScene(new Scene(loader.getRoot()));
+            DelChangeAttribute controller = loader.getController();
+            controller.setDialogStage(stage);
+            controller.setIsChange(false);
+            controller.name.addAll(name.sorted());
+            controller.genre.addAll(genre.sorted());
+            controller.producer.addAll(producer.sorted());
+            controller.actor.addAll(actor.sorted());
+            controller.year.addAll(year.sorted());
+            stage.showAndWait();
+            updateAttribute();
+        });
+
+        changeAttribute.setOnAction(actionEvent -> {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Application.class.getResource("delChangeAttribute.fxml"));
+            try {
+                loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Stage stage = new Stage();
+            stage.setScene(new Scene(loader.getRoot()));
+            DelChangeAttribute controller = loader.getController();
+            controller.setDialogStage(stage);
+            controller.setIsChange(true);
+            controller.name.addAll(name.sorted());
+            controller.genre.addAll(genre.sorted());
+            controller.producer.addAll(producer.sorted());
+            controller.actor.addAll(actor.sorted());
+            controller.year.addAll(year.sorted());
             stage.showAndWait();
             updateAttribute();
         });
