@@ -72,12 +72,11 @@ public class DelChangeAttribute implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         attribute.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
             delValue.setItems(switch (newValue) {
-                case NAME -> name;
+                case NAME, RATE -> null;
                 case YEAR -> year;
                 case PRODUCER -> producer;
                 case GENRE -> genre;
                 case ACTOR -> actor;
-                case RATE -> null;
             });
             if (isChange) {
                 ok.setText("Сохранить");
@@ -89,6 +88,6 @@ public class DelChangeAttribute implements Initializable {
         delValue.disableProperty().bind(attribute.getSelectionModel().selectedItemProperty().isNull());
         ok.disableProperty().bind(attribute.getSelectionModel().selectedItemProperty().isNull());
         ok.disableProperty().bind(delValue.getSelectionModel().selectedItemProperty().isNull());
-        attribute.getItems().setAll(TypeSearch.NAME, TypeSearch.GENRE, TypeSearch.PRODUCER, TypeSearch.ACTOR, TypeSearch.YEAR);
+        attribute.getItems().setAll(TypeSearch.GENRE, TypeSearch.PRODUCER, TypeSearch.ACTOR, TypeSearch.YEAR);
     }
 }

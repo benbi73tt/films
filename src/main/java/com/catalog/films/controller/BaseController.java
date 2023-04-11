@@ -46,7 +46,7 @@ public class BaseController implements Initializable {
     @FXML
     private ComboBox<String> producerBox;
     @FXML
-    private ComboBox<String> nameBox;
+    private TextField nameBox;
     @FXML
     private ComboBox<String> yearBox;
     @FXML
@@ -230,10 +230,10 @@ public class BaseController implements Initializable {
             int selectedIndex = CatalogTable.getSelectionModel().getSelectedIndex();
             int filmId = CatalogTable.getItems().get(selectedIndex).getId();
             try {
-                if (!(nameBox.getValue() == null)) {
-                    change(filmId, nameBox.getValue(), TypeSearch.NAME);
+                if (!nameBox.getText().isBlank()) {
+                    change(filmId, nameBox.getText(), TypeSearch.NAME);
                 }
-                if (!ratingField.getText().isBlank() && isCheckNumber(ratingField.getText())) {
+                if (isCheckNumber(ratingField.getText())) {
                     change(filmId, ratingField.getText(), TypeSearch.RATE);
                 }
                 if (!(yearBox.getValue() == null)) {
@@ -281,13 +281,11 @@ public class BaseController implements Initializable {
         try {
             updateGenre();
             updateActor();
-            updateName();
             updateProducer();
             updateYear();
 
             genreBox.getItems().setAll(genre.sorted());
             actorBox.getItems().setAll(actor.sorted());
-            nameBox.getItems().setAll(name.sorted());
             producerBox.getItems().setAll(producer.sorted());
             yearBox.getItems().setAll(year.sorted());
         } catch (SQLException e) {

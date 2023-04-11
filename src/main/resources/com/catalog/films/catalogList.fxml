@@ -18,7 +18,7 @@
 
         </columns>
     </TableView>
-    <ComboBox fx:id="nameBox" layoutX="160.0" layoutY="60.0" prefHeight="26.0" prefWidth="102.0"/>
+    <TextField fx:id="nameBox" layoutX="160.0" layoutY="60.0" prefHeight="26.0" prefWidth="102.0"/>
     <TextField fx:id="ratingField" layoutX="280.0" layoutY="60.0" prefHeight="26.0" prefWidth="102.0"/>
     <ComboBox fx:id="genreBox" layoutX="400.0" layoutY="60.0" prefHeight="26.0" prefWidth="102.0"/>
     <ComboBox fx:id="producerBox" layoutX="520.0" layoutY="60.0" prefHeight="26.0" prefWidth="102.0"/>

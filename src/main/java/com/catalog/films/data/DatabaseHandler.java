@@ -97,16 +97,16 @@ public class DatabaseHandler {
             case GENRE ->
                     "UPDATE catalog_films SET genre = '" + searchAttribute(text, GENRE) + "' WHERE id=" + id + ";";
             case ACTOR ->
-                    "UPDATE catalog_actor Set actor_id ='" + searchAttribute(text, ACTOR) + "' Where catalog_id = " + id + ";";
+                    "UPDATE catalog_actor SET actor_id ='" + searchAttribute(text, ACTOR) + "' Where catalog_id = " + id + ";";
         };
 
         PreparedStatement prSt = getDBConnection().prepareStatement(update);
-        prSt.executeUpdate();
         if (type == ACTOR) {
             String duplicateActor = "DELETE FROM catalog_actor t1 WHERE EXISTS (SELECT 1 FROM catalog_actor t2 WHERE t2.id<t1.id and t1.actor_id=t2.actor_id and t1.catalog_id=t2.catalog_id);";
             prSt = getDBConnection().prepareStatement(duplicateActor);
-            prSt.executeUpdate();
         }
+        prSt.executeUpdate();
+
     }
 
     public void changeAttribute(int id, TypeSearch type, String text) throws SQLException {
@@ -157,9 +157,9 @@ public class DatabaseHandler {
 
     public int searchAttribute(String str, TypeSearch type) throws SQLException {
         String likeAttribute = switch (type) {
+            case NAME -> "SELECT id FROM name_films WHERE name LIKE '" + str + "';";
             case GENRE -> "SELECT id FROM genre WHERE name LIKE '" + str + "';";
             case YEAR -> "SELECT id FROM year WHERE year_release =" + str + ";";
-            case NAME -> "SELECT id FROM name_films WHERE name LIKE '" + str + "';";
             case PRODUCER -> "SELECT id FROM producer WHERE name LIKE '" + str + "';";
             case ACTOR -> "SELECT id FROM actor WHERE name LIKE '" + str + "';";
             default -> throw new IllegalStateException("Unexpected value: " + type);
@@ -172,10 +172,6 @@ public class DatabaseHandler {
         }
         if (result == 0) {
             insertAttribute(NAME, str);
-//            String name = "INSERT INTO name_films (Name) VALUES (?)";
-//            PreparedStatement prSt1 = getDBConnection().prepareStatement(name);
-//            prSt1.setString(1, str);
-//            prSt1.executeUpdate();
             result = searchAttribute(str, NAME);
         }
         return result;
@@ -218,7 +214,7 @@ public class DatabaseHandler {
     }
 
     public void insertAttribute(TypeSearch typeSearch, String value) throws SQLException {
-        if (typeSearch != NAME && searchAttribute(value, typeSearch) != 0 ) {
+        if (typeSearch != NAME && searchAttribute(value, typeSearch) != 0) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Такое поле уже существует...", ButtonType.CANCEL);
             alert.showAndWait();
         } else {
