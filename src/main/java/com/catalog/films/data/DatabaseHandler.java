@@ -166,10 +166,19 @@ public class DatabaseHandler {
         };
         PreparedStatement prSt = getDBConnection().prepareStatement(likeAttribute);
         resSet = prSt.executeQuery();
+        int result = 0;
         if (resSet.next()) {
-            return resSet.getInt(1);
+            result = resSet.getInt(1);
         }
-        return 0;
+        if (result == 0) {
+            insertAttribute(NAME, str);
+//            String name = "INSERT INTO name_films (Name) VALUES (?)";
+//            PreparedStatement prSt1 = getDBConnection().prepareStatement(name);
+//            prSt1.setString(1, str);
+//            prSt1.executeUpdate();
+            result = searchAttribute(str, NAME);
+        }
+        return result;
     }
 
 
@@ -209,7 +218,7 @@ public class DatabaseHandler {
     }
 
     public void insertAttribute(TypeSearch typeSearch, String value) throws SQLException {
-        if (searchAttribute(value, typeSearch) != 0) {
+        if (typeSearch != NAME && searchAttribute(value, typeSearch) != 0 ) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Такое поле уже существует...", ButtonType.CANCEL);
             alert.showAndWait();
         } else {

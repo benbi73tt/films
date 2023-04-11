@@ -207,7 +207,6 @@ public class BaseController implements Initializable {
             stage.setScene(new Scene(loader.getRoot()));
             AddFilm controller = loader.getController();
             controller.setDialogStage(stage);
-            controller.getNameBox().setItems(name.sorted());
             controller.getGenreBox().setItems(genre.sorted());
             controller.getProducerBox().setItems(producer.sorted());
             controller.getYearBox().setItems(year.sorted());

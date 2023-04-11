@@ -53,6 +53,6 @@ public class NewAttribute implements Initializable {
         newValue.disableProperty().bind(attribute.getSelectionModel().selectedItemProperty().isNull());
         ok.disableProperty().bind(attribute.getSelectionModel().selectedItemProperty().isNull());
         ok.disableProperty().bind(Bindings.isEmpty(newValue.textProperty()));
-        attribute.getItems().setAll(TypeSearch.NAME, TypeSearch.GENRE, TypeSearch.PRODUCER, TypeSearch.ACTOR, TypeSearch.YEAR);
+        attribute.getItems().setAll(TypeSearch.GENRE, TypeSearch.PRODUCER, TypeSearch.ACTOR, TypeSearch.YEAR);
     }
 }

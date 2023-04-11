@@ -18,7 +18,7 @@ public class AddFilm {
     @FXML
     private ComboBox<String> producerBox;
     @FXML
-    private ComboBox<String> nameBox;
+    private TextField nameBox;
     @FXML
     private ComboBox<String> yearBox;
     @FXML
@@ -30,7 +30,7 @@ public class AddFilm {
     DatabaseHandler dbHandler = new DatabaseHandler();
 
     private boolean checkIsEmpty() {
-        return genreBox.getValue() == null || nameBox.getValue() == null || producerBox.getValue() == null || actorBox.getValue() == null || yearBox.getValue() == null;
+        return genreBox.getValue() == null || producerBox.getValue() == null || actorBox.getValue() == null || yearBox.getValue() == null;
     }
 
     private boolean isCheckNumber(String name) {
@@ -44,18 +44,18 @@ public class AddFilm {
 
     @FXML
     private void save() {
-        if (checkIsEmpty() || !isCheckNumber(ratingField.getText()) || !(isCheckRate(ratingField.getText()))) {
+        if (checkIsEmpty() || nameBox.getText().isBlank() || !isCheckNumber(ratingField.getText()) || !(isCheckRate(ratingField.getText()))) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Ввели неккоректные данные. Попробуйте снова...", ButtonType.CANCEL);
             alert.showAndWait();
         } else {
-            Film film = new Film(nameBox.getValue(),
+            Film film = new Film(nameBox.getText(),
                     ratingField.getText(),
                     genreBox.getValue(),
                     producerBox.getValue(),
                     yearBox.getValue(),
                     actorBox.getValue());
             dbHandler.insertFilm(film);
-            nameBox.setValue(null);
+            nameBox.clear();
             ratingField.clear();
             producerBox.setValue(null);
             yearBox.setValue(null);
